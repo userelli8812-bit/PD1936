@@ -41,7 +41,7 @@ export OF_USE_LZ4_COMPRESSION=0
 # 维护者信息
 export OF_MAINTAINER="YourName"
 export FOX_BUILD_TYPE="Beta"
-export FOX_VERSION="R12.1"
+
 export FOX_MAINTAINER_PATCH_VERSION=1
 
 # ==================== 显示与屏幕配置 ====================
@@ -202,7 +202,7 @@ export OF_NO_KEYMASTER_VER_4X=0
 # 不要在 vendorsetup.sh 中使用 lunch_combo 命令
 # 系统会自动调用 lunch_combo omni_PD1936-eng 或类似命令
 
-echo "[OrangeFox] 为 PD1936 (vivo V1936A) 配置 OrangeFox R11.1"
+
 echo "[OrangeFox] 维护者: YourName"
 echo "[OrangeFox] 构建类型: Beta"
 echo "[OrangeFox] 屏幕: 1080x2400"
