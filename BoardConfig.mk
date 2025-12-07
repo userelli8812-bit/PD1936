@@ -118,6 +118,15 @@ FOX_CUSTOM_BATTERY_CURRENT_PATH := "/sys/class/power_supply/battery/current_now"
 FOX_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
 FOX_MAX_BRIGHTNESS := 255
 FOX_DEFAULT_BRIGHTNESS := 160
+# 基础配置 → 屏幕相关（新增/调整位置）
+TARGET_SCREEN_DENSITY := 480
+TARGET_SCREEN_WIDTH := 1080
+TARGET_SCREEN_HEIGHT := 2400
+# 强制声明 TWRP 亮度变量（放在基础配置中，优先加载）
+TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
+TW_MAX_BRIGHTNESS := 255
+TW_DEFAULT_BRIGHTNESS := 160
+
 # 版本信息
 FOX_BUILD_TYPE := Beta
 FOX_MAINTAINER := YourName
