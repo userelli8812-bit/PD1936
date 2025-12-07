@@ -51,27 +51,16 @@ TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
 TW_MAX_BRIGHTNESS := 255
 TW_DEFAULT_BRIGHTNESS := 160
 
-# ==================== 内核配置 (选择一种方式) ====================
+# ==================== 内核配置 ====================
 
-# 选项1: 使用预编译内核 (推荐，更稳定)
+# 使用预编译内核
 TARGET_FORCE_PREBUILT_KERNEL := true
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/Image.gz-dtb
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 
-# 注释掉源码内核的配置
-# TARGET_KERNEL_SOURCE := kernel/vivo/PD1936
-# TARGET_KERNEL_CONFIG := PD1936_defconfig
-
-# 选项2: 使用源码编译内核 (如果选择这个，注释掉上面的预编译配置)
-# TARGET_FORCE_PREBUILT_KERNEL := false
-# TARGET_KERNEL_SOURCE := kernel/vivo/PD1936
-# TARGET_KERNEL_CONFIG := PD1936_defconfig
-# TARGET_KERNEL_CLANG_COMPILE := true
-# TARGET_KERNEL_VERSION := 4.14
-
-# ==================== 公共内核参数 ====================
+# 公共内核参数
 BOARD_BOOTIMG_HEADER_VERSION := 2
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 loop.max_part=7 androidboot.usbcontroller=a600000.dwc3
@@ -83,41 +72,32 @@ BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_KERNEL_IMAGE_NAME := Image
 
-# 根据是否使用预编译调整DTB设置
+# 预编译内核的DTB设置
 ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
     BOARD_INCLUDE_DTB_IN_BOOTIMG := false
     BOARD_KERNEL_SEPARATED_DTBO := false
-else
-    BOARD_INCLUDE_DTB_IN_BOOTIMG := true
-    BOARD_KERNEL_SEPARATED_DTBO := true
 endif
 
-# ==================== 分区配置 (需要根据实际调整) ====================
-BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
+# ==================== 分区配置 ====================
+BOARD_FLASH_BLOCK_SIZE := 262144
 BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296
 BOARD_DTBOIMG_PARTITION_SIZE := 8388608
 
-# 系统分区 - 根据实际调整大小
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 8589934592 # 8GB (更实际的估计)
+# 系统分区
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 8589934592
 
-# 用户数据分区 - 通常很大
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 12884901888 # 12GB (示例)
+# 用户数据分区
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 12884901888
 
 # Vendor分区
-BOARD_VENDORIMAGE_PARTITION_SIZE := 2147483648 # 2GB
+BOARD_VENDORIMAGE_PARTITION_SIZE := 2147483648
 
 # 其他分区
-BOARD_PRODUCTIMAGE_PARTITION_SIZE := 1073741824 # 1GB
-BOARD_SYSTEM_EXTIMAGE_PARTITION_SIZE := 1073741824 # 1GB
-BOARD_ODMIMAGE_PARTITION_SIZE := 536870912 # 512MB
-BOARD_METADATAIMAGE_PARTITION_SIZE := 16777216 # 16MB
-
-# 启用动态分区 (如果设备支持)
-# BOARD_SUPER_PARTITION_SIZE := 12884901888 # 12GB
-# BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
-# BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 12884901888 # 12GB
-# BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system vendor product system_ext odm
+BOARD_PRODUCTIMAGE_PARTITION_SIZE := 1073741824
+BOARD_SYSTEM_EXTIMAGE_PARTITION_SIZE := 1073741824
+BOARD_ODMIMAGE_PARTITION_SIZE := 536870912
+BOARD_METADATAIMAGE_PARTITION_SIZE := 16777216
 
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 BOARD_USES_SYSTEM_OTHER_ODEX := true
@@ -175,7 +155,7 @@ FOX_USE_GREP_BINARY := true
 FOX_USE_LZMA_COMPRESSION := true
 
 # 显示配置
-FOX_THEME := "12"
+FOX_THEME := "11"
 FOX_CUSTOM_BATTERY_PERCENTAGE := true
 FOX_CUSTOM_BATTERY_CAPACITY := "4000"
 FOX_CUSTOM_BATTERY_TEMP_PATH := "/sys/class/power_supply/battery/temp"
@@ -187,7 +167,7 @@ FOX_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
 FOX_MAX_BRIGHTNESS := 255
 FOX_DEFAULT_BRIGHTNESS := 160
 
-# 版本信息
+# 版本信息 - 重要：不要使用 FOX_VERSION
 FOX_BUILD_TYPE := Beta
 FOX_MAINTAINER := YourName
 FOX_MAINTAINER_PATCH_VERSION := 1
@@ -198,8 +178,10 @@ FOX_SUPPORT_INPUT_DISABLE_VERIFICATION := false
 FOX_SUPPORT_PREBUILT_KERNEL := true
 FOX_SUPPORT_PREBUILT_DTB := true
 FOX_SUPPORT_PREBUILT_DTBO := true
-FOX_SUPPORT_ALL_BLOCK_OTA_UPDATES := true
-FOX_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR := true
+
+# 重要：移除冲突的 OTA 配置
+# FOX_SUPPORT_ALL_BLOCK_OTA_UPDATES := true   # 已移除，与其他配置冲突
+# FOX_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR := true  # 已移除
 
 # UI配置
 FOX_USE_UNLOCK_BUTTON := true
@@ -208,15 +190,8 @@ FOX_USE_STOCK_KERNEL := true
 FOX_USE_STOCK_RECOVERY_IMAGE := false
 
 # ==================== 触摸屏固件支持 ====================
-# 触摸屏设备模块
-TARGET_RECOVERY_DEVICE_MODULES += \
-    android.hardware.vibrator-V1-ndk_platform.so \
-    libion \
-    libxml2 \
-    vendor.display.config@1.0 \
-    vendor.display.config@2.0
 
-# 触摸屏配置
+# 触摸屏配置 - 使用通用设置
 TW_LOAD_VENDOR_MODULES := true
 TW_LOAD_VENDOR_BINS := true
 TW_OEM_BUILD := true
@@ -224,15 +199,31 @@ TW_INCLUDE_CRYPTO_FBE := true
 FOX_SUPPORT_TOUCH_FIRMWARE := true
 FOX_TOUCH_FIRMWARE_PATH := "/vendor/firmware/"
 
-# 固件链接文件
-TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += \
-    $(TARGET_OUT_VENDOR_EXECUTABLES)/hw/vendor.qti.hardware.vibrator.service \
-    $(TARGET_OUT_VENDOR_EXECUTABLES)/hw/android.hardware.vibrator-service.example
+# 可以添加实际存在的触摸屏相关文件
+# 如果有具体的触摸屏固件文件，可以在这里添加
+# 如果没有，可以保持为空或使用通用设置
 
-TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-    $(TARGET_OUT_SHARED_LIBRARIES)/android.hardware.vibrator-V1-ndk_platform.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libion.so \
-    $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so
+# 示例：如果知道触摸屏固件文件名，可以这样添加
+# TARGET_RECOVERY_DEVICE_MODULES += \
+#     touchscreen_fw.bin \
+#     touchscreen_driver.ko
+
+# 如果不知道具体文件名，可以暂时不添加
+# TARGET_RECOVERY_DEVICE_MODULES :=
+
+# 可以添加一些通用的恢复模块
+TARGET_RECOVERY_DEVICE_MODULES += \
+    recovery.fstab \
+    ld-android.so \
+    liblog.so
+
+# 固件链接文件 - 根据实际需要调整
+# 如果有具体的触摸屏相关二进制文件，可以在这里添加
+# TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += \
+#     $(TARGET_OUT_VENDOR_EXECUTABLES)/tp_firmware_loader
+
+# TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+#     $(TARGET_OUT_SHARED_LIBRARIES)/libtouchscreen.so
 
 # ==================== 加密配置 ====================
 FOX_USE_DATA_DECRYPTION := true
@@ -312,4 +303,3 @@ TW_BACKUP_EXCLUSIONS := "/data/fonts/files"
 TW_RECOVERY_ADDITIONAL_RELINK_FILES += \
     $(TARGET_OUT_EXECUTABLES)/twrp \
     $(TARGET_OUT_EXECUTABLES)/pigz
-
