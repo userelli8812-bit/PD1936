@@ -195,9 +195,4 @@ FOX_DEVICE_NAME := "PD1936"
 FOX_USE_SYSTEM_PROPS := true
 FOX_USE_SPECIFIC_PROPS := \
     "ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental"
-# 备份排除
-TW_BACKUP_EXCLUSIONS := "/data/fonts/files"
-# 附加恢复模块
-TW_RECOVERY_ADDITIONAL_RELINK_FILES += \
-    $(TARGET_OUT_EXECUTABLES)/twrp \
-    $(TARGET_OUT_EXECUTABLES)/pigz
+ 
