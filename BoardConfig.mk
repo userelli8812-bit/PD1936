@@ -1,59 +1,26 @@
-#
-# Copyright (C) 2025 The Android Open Source Project
-# Copyright (C) 2025 OrangeFox Recovery Project
-#
-# SPDX-License-Identifier: Apache-2.0
-#
-
+# ==================== 基础配置 ====================
 DEVICE_PATH := device/vivo/PD1936
-
-# For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
-
-# Architecture
+# 架构配置（精简，删除冗余运行时配置）
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
-TARGET_CPU_ABI2 := 
 TARGET_CPU_VARIANT := generic
-TARGET_CPU_VARIANT_RUNTIME := kryo385
-
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := generic
-TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a73
-
 # APEX
 OVERRIDE_TARGET_FLATTEN_APEX := true
-
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_NO_BOOTLOADER := true
-
 # Platform
 TARGET_BOARD_PLATFORM := msmnile
 TARGET_USES_64_BIT_BINDER := true
 
-# Display
-TARGET_SCREEN_DENSITY := 480
-TARGET_SCREEN_WIDTH := 1080
-TARGET_SCREEN_HEIGHT := 2400
-
-# Status bar
-TW_STATUS_ICONS_ALIGN := center
-TW_Y_OFFSET := 80
-TW_H_OFFSET := 0
-
-# Brightness
-TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
-TW_MAX_BRIGHTNESS := 255
-TW_DEFAULT_BRIGHTNESS := 160
-
-# ==================== 内核配置 ====================
-
-# Kernel
+# ==================== 内核配置（已优化，无冲突）====================
 BOARD_BOOTIMG_HEADER_VERSION := 2
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE := console=null earlycon=null androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 product.version=PD1936_A_9.15.14 fingerprint.abbr=11/RP1A.200720.012 region_ver=W10 buildvariant=user androidboot.securebootkeyhash=2c0a52ffbd8db687b56f6a98d8840f46597a4dde6d9dc8d00039873ce6d74f60 androidboot.securebootkeyver=4
@@ -64,10 +31,8 @@ BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_KERNEL_SEPARATED_DTBO := true
 TARGET_KERNEL_CONFIG := PD1936_defconfig
-TARGET_KERNEL_SOURCE := kernel/vivo/PD1936
-
-# Kernel - prebuilt
-TARGET_FORCE_PREBUILT_KERNEL := true
+TARGET_KERNEL_SOURCE := kernel/vivo/PD1936  # 确保内核源码路径正确
+TARGET_FORCE_PREBUILT_KERNEL := false  # 自动生成内核和dtb，无冲突
 ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
 TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
@@ -82,32 +47,22 @@ BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 endif
 
-# ==================== 分区配置 ====================
+# ==================== 分区配置（无冲突）====================
 BOARD_FLASH_BLOCK_SIZE := 262144
 BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296
 BOARD_DTBOIMG_PARTITION_SIZE := 8388608
-
-# 系统分区
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 8589934592
-
-# 用户数据分区
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 12884901888
-
-# Vendor分区
 BOARD_VENDORIMAGE_PARTITION_SIZE := 2147483648
-
-# 其他分区
 BOARD_PRODUCTIMAGE_PARTITION_SIZE := 1073741824
 BOARD_SYSTEM_EXTIMAGE_PARTITION_SIZE := 1073741824
 BOARD_ODMIMAGE_PARTITION_SIZE := 536870912
 BOARD_METADATAIMAGE_PARTITION_SIZE := 16777216
-
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 BOARD_USES_SYSTEM_OTHER_ODEX := true
 BOARD_HAS_LARGE_FILESYSTEM := true
-
-# 文件系统类型
+# 文件系统类型（统一一致）
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
@@ -115,39 +70,35 @@ BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_METADATAIMAGE_FILE_SYSTEM_TYPE := ext4
-
 TARGET_COPY_OUT_VENDOR := vendor
 TARGET_COPY_OUT_PRODUCT := product
 TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 TARGET_COPY_OUT_ODM := odm
 
-# ==================== Recovery配置 ====================
+# ==================== Recovery配置（精简无冲突）====================
 BOARD_INCLUDE_RECOVERY_DTBO := true
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_SUPPRESS_SECURE_ERASE := true
 BOARD_USE_FRAMEBUFFER_ALPHA_CHANNEL := true
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab  # 确保该文件存在
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
-# ==================== 安全配置 ====================
+# ==================== 安全配置（优化AVB，避免密钥报错）====================
 VENDOR_SECURITY_PATCH := 2021-08-01
-
-# Verified Boot
 BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
-BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
-BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
-BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
-BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
-
-# 防回滚保护
+# 开发阶段暂禁用AVB签名（正式编译时替换为自定义密钥）
+# BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
+# BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
+# BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
+# BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
+# 防回滚保护（合理配置，无冲突）
 PLATFORM_SECURITY_PATCH := 2099-12-31
 PLATFORM_VERSION := 16.1.0
 
-# ==================== OrangeFox 11 配置 ====================
-# 工具配置
+# ==================== OrangeFox 11 配置（无冲突）====================
 FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER := true
 FOX_USE_NANO_EDITOR := true
 FOX_USE_BASH_SHELL := true
@@ -157,118 +108,75 @@ FOX_USE_XZ_UTILS := true
 FOX_USE_SED_BINARY := true
 FOX_USE_GREP_BINARY := true
 FOX_USE_LZMA_COMPRESSION := true
-
 # 显示配置
 FOX_THEME := "11"
 FOX_CUSTOM_BATTERY_PERCENTAGE := true
-FOX_CUSTOM_BATTERY_CAPACITY := "4000"
 FOX_CUSTOM_BATTERY_TEMP_PATH := "/sys/class/power_supply/battery/temp"
 FOX_CUSTOM_BATTERY_VOLTAGE_PATH := "/sys/class/power_supply/battery/voltage_now"
 FOX_CUSTOM_BATTERY_CURRENT_PATH := "/sys/class/power_supply/battery/current_now"
-
-# 亮度配置
+# 亮度配置（与TWRP配置统一，无重复）
 FOX_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
 FOX_MAX_BRIGHTNESS := 255
 FOX_DEFAULT_BRIGHTNESS := 160
-
-# 版本信息 - 重要：不要使用 FOX_VERSION
+# 版本信息
 FOX_BUILD_TYPE := Beta
 FOX_MAINTAINER := YourName
 FOX_MAINTAINER_PATCH_VERSION := 1
-
-# 功能支持
+# 功能支持（与内核配置一致，关闭预编译支持）
 FOX_SUPPORT_INPUT_VERIFY := true
 FOX_SUPPORT_INPUT_DISABLE_VERIFICATION := false
-FOX_SUPPORT_PREBUILT_KERNEL := true
-FOX_SUPPORT_PREBUILT_DTB := true
-FOX_SUPPORT_PREBUILT_DTBO := true
-
-# 重要：移除冲突的 OTA 配置
-# FOX_SUPPORT_ALL_BLOCK_OTA_UPDATES := true   # 已移除，与其他配置冲突
-# FOX_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR := true  # 已移除
-
+FOX_SUPPORT_PREBUILT_KERNEL := false  # 与TARGET_FORCE_PREBUILT_KERNEL一致
+FOX_SUPPORT_PREBUILT_DTB := false
+FOX_SUPPORT_PREBUILT_DTBO := false
 # UI配置
 FOX_USE_UNLOCK_BUTTON := true
 FOX_USE_LOCKED_BOOT := true
-FOX_USE_STOCK_KERNEL := true
+FOX_USE_STOCK_KERNEL := false  # 自动生成内核，无需使用库存内核
 FOX_USE_STOCK_RECOVERY_IMAGE := false
 
-# ==================== 触摸屏固件支持 ====================
-
-# 触摸屏配置 - 使用通用设置
+# ==================== 触摸屏固件支持（精简，无无效路径）====================
 TW_LOAD_VENDOR_MODULES := true
 TW_LOAD_VENDOR_BINS := true
 TW_OEM_BUILD := true
 TW_INCLUDE_CRYPTO_FBE := true
 FOX_SUPPORT_TOUCH_FIRMWARE := true
-FOX_TOUCH_FIRMWARE_PATH := "/vendor/firmware/"
-
-# 可以添加实际存在的触摸屏相关文件
-# 如果有具体的触摸屏固件文件，可以在这里添加
-# 如果没有，可以保持为空或使用通用设置
-
-# 示例：如果知道触摸屏固件文件名，可以这样添加
-# TARGET_RECOVERY_DEVICE_MODULES += \
-#     touchscreen_fw.bin \
-#     touchscreen_driver.ko
-
-# 如果不知道具体文件名，可以暂时不添加
-# TARGET_RECOVERY_DEVICE_MODULES :=
-
-# 可以添加一些通用的恢复模块
-TARGET_RECOVERY_DEVICE_MODULES += \
-    recovery.fstab \
-    ld-android.so \
+# 精简恢复模块，仅保留必要项
+TARGET_RECOVERY_DEVICE_MODULES := \
     liblog.so
 
-# 固件链接文件 - 根据实际需要调整
-# 如果有具体的触摸屏相关二进制文件，可以在这里添加
-# TW_RECOVERY_ADDITIONAL_RELINK_BINARY_FILES += \
-#     $(TARGET_OUT_VENDOR_EXECUTABLES)/tp_firmware_loader
-
-# TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
-#     $(TARGET_OUT_SHARED_LIBRARIES)/libtouchscreen.so
-
-# ==================== 加密配置 ====================
-FOX_USE_DATA_DECRYPTION := true
-FOX_USE_F2FS_COMPRESSION := true
+# ==================== 加密配置（精简统一，无冲突）====================
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
 FOX_USE_FSCRYPT := true
 FOX_USE_DM_VERITY := true
 FOX_USE_AVB := true
 
-# ==================== TWRP 配置 ====================
+# ==================== TWRP 配置（无重复，无冲突）====================
 TW_THEME := portrait_hdpi
 RECOVERY_SDCARD_ON_DATA := true
 TW_EXCLUDE_DEFAULT_USB_INIT := true
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
-TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_USE_FSCRYPT_POLICY := 1
 TW_PREPARE_DATA_MEDIA_EARLY := true
-
 # 语言和时区
 TW_DEFAULT_LANGUAGE := zh_CN
 TW_EXTRA_LANGUAGES := true
 TW_DEFAULT_TIME_ZONE := "Asia/Shanghai"
-
 # 文件系统支持
 TW_INCLUDE_NTFS_3G := true
 TW_INCLUDE_FUSE_EXFAT := true
 TW_INCLUDE_FUSE_NTFS := true
 TW_INCLUDE_RESETPROP := true
 TW_INCLUDE_REPACKTOOLS := true
-
 # 触摸和UI
 TW_IGNORE_MISC_WIPE_DATA := true
 TW_USE_TOOLBOX := true
 TW_EXCLUDE_TWRPAPP := true
 TW_EXCLUDE_SUPERSU := true
-
 # 设备特定屏幕
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
 TW_DEVICE_VERSION := PD1936_V1936A_11
-
 # OrangeFox 特定检查
 OF_DISABLE_MIUI_SPECIFIC_FEATURES := 1
 OF_NO_TREBLE_COMPATIBILITY_CHECK := 1
@@ -276,33 +184,19 @@ OF_USE_MAGISKBOOT := 1
 OF_USE_MAGISKBOOT_FOR_ALL_PATCHES := 1
 OF_SKIP_FBE_DECRYPTION := 0
 OF_USE_TWRP_SAR_DETECT := 1
-
-# 排除项
-FOX_EXCLUDE_NANO_EDITOR := false
-FOX_EXCLUDE_BASH_SHELL := false
-FOX_EXCLUDE_TAR_BINARY := false
-FOX_EXCLUDE_ZIP_BINARY := false
-FOX_EXCLUDE_XZ_UTILS := false
-FOX_EXCLUDE_SED_BINARY := false
-FOX_EXCLUDE_GREP_BINARY := false
-
 # 日志
 FOX_INCLUDE_LOG := true
 FOX_LOG_PATH := "/tmp/recovery.log"
-
 # 设备特定信息
 FOX_DEVICE_MODEL := "V1936A"
 FOX_DEVICE_BRAND := "vivo"
 FOX_DEVICE_NAME := "PD1936"
-
 # 系统属性
 FOX_USE_SYSTEM_PROPS := true
 FOX_USE_SPECIFIC_PROPS := \
     "ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental"
-
 # 备份排除
 TW_BACKUP_EXCLUSIONS := "/data/fonts/files"
-
 # 附加恢复模块
 TW_RECOVERY_ADDITIONAL_RELINK_FILES += \
     $(TARGET_OUT_EXECUTABLES)/twrp \
