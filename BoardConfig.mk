@@ -140,9 +140,7 @@ TW_LOAD_VENDOR_BINS := true
 TW_OEM_BUILD := true
 TW_INCLUDE_CRYPTO_FBE := true
 FOX_SUPPORT_TOUCH_FIRMWARE := true
-# 精简恢复模块，仅保留必要项
-TARGET_RECOVERY_DEVICE_MODULES := \
-    liblog.so
+TARGET_RECOVERY_DEVICE_MODULES += touchscreen_fw.bin  # 替换为实际固件文件名
 
 # ==================== 加密配置（精简统一，无冲突）====================
 TW_INCLUDE_CRYPTO := true
