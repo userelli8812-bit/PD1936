@@ -1,6 +1,6 @@
 #
 # Copyright (C) 2025 The Android Open Source Project
-# Copyright (C) 2025 OrangeFox Recovery Project
+# Copyright (C) 2025 SebaUbuntu's TWRP device tree generator
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -16,7 +16,7 @@ TARGET_ARCH_VARIANT := armv8-a
 TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 := 
 TARGET_CPU_VARIANT := generic
-TARGET_CPU_VARIANT_RUNTIME := kryo385
+TARGET_CPU_VARIANT_RUNTIME := generic
 
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv7-a-neon
@@ -32,26 +32,10 @@ OVERRIDE_TARGET_FLATTEN_APEX := true
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_NO_BOOTLOADER := true
 
-# Platform
-TARGET_BOARD_PLATFORM := msmnile
-
 # Display
 TARGET_SCREEN_DENSITY := 480
-TARGET_SCREEN_WIDTH := 1080
-TARGET_SCREEN_HEIGHT := 2400
-TW_THEME := portrait_hdpi
 
-# Status bar
-TW_STATUS_ICONS_ALIGN := center
-TW_Y_OFFSET := 80
-TW_H_OFFSET := 0
-
-# Brightness
-TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
-TW_MAX_BRIGHTNESS := 255
-TW_DEFAULT_BRIGHTNESS := 160
-
-# ==================== 内核配置 (按原版) ====================
+# Kernel
 BOARD_BOOTIMG_HEADER_VERSION := 2
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE := console=null earlycon=null androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 product.version=PD1936_A_9.15.14 fingerprint.abbr=11/RP1A.200720.012 region_ver=W10 buildvariant=user androidboot.securebootkeyhash=2c0a52ffbd8db687b56f6a98d8840f46597a4dde6d9dc8d00039873ce6d74f60 androidboot.securebootkeyver=4
@@ -67,7 +51,7 @@ BOARD_KERNEL_SEPARATED_DTBO := true
 TARGET_KERNEL_CONFIG := PD1936_defconfig
 TARGET_KERNEL_SOURCE := kernel/vivo/PD1936
 
-# Kernel - prebuilt (按原版)
+# Kernel - prebuilt
 TARGET_FORCE_PREBUILT_KERNEL := true
 ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
@@ -78,35 +62,27 @@ BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 BOARD_KERNEL_SEPARATED_DTBO := 
 endif
 
-# ==================== 分区配置 ====================
-BOARD_FLASH_BLOCK_SIZE := 262144
+# Partitions
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 4294967296
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 1073741824
-BOARD_VENDORIMAGE_PARTITION_SIZE := 1610612736
-BOARD_METADATAIMAGE_PARTITION_SIZE := 16777216
-BOARD_DTBOIMG_PARTITION_SIZE := 8388608
-
-BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_METADATAIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 
-# ==================== Recovery配置 ====================
+# Platform
+TARGET_BOARD_PLATFORM := msmnile
+
+# Recovery
 BOARD_INCLUDE_RECOVERY_DTBO := true
-BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_SUPPRESS_SECURE_ERASE := true
-BOARD_USE_FRAMEBUFFER_ALPHA_CHANNEL := true
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
-# ==================== 安全配置 ====================
+# Security patch level
 VENDOR_SECURITY_PATCH := 2021-08-01
 
 # Verified Boot
@@ -117,73 +93,86 @@ BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA4096
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 
-# 防回滚保护
+# Hack: prevent anti rollback
 PLATFORM_SECURITY_PATCH := 2099-12-31
 VENDOR_SECURITY_PATCH := 2099-12-31
 PLATFORM_VERSION := 16.1.0
 
-# ==================== OrangeFox 配置 (简化版) ====================
-# 核心配置 - 避免冲突
-FOX_BUILD_TYPE := Beta
-FOX_MAINTAINER := YourName
-FOX_MAINTAINER_PATCH_VERSION := 1
-
-# 重要：确保没有设置 FOX_VERSION
-# FOX_VERSION :=  # 不要设置这个变量
-
-# 重要：移除冲突的 OTA 配置
-# FOX_SUPPORT_ALL_BLOCK_OTA_UPDATES :=  # 不要设置这个变量
-# FOX_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR :=  # 不要设置这个变量
-
-# 基本工具支持
-FOX_USE_NANO_EDITOR := true
-FOX_USE_BASH_SHELL := true
-FOX_USE_TAR_BINARY := true
-FOX_USE_XZ_UTILS := true
-
-# 触摸屏支持
-FOX_SUPPORT_TOUCH_FIRMWARE := true
-FOX_TOUCH_FIRMWARE_PATH := "/vendor/firmware/"
-
-# ==================== TWRP 配置 ====================
-# 语言和时区
-TW_DEFAULT_LANGUAGE := zh_CN
+# TWRP Configuration
+TW_THEME := portrait_hdpi
 TW_EXTRA_LANGUAGES := true
-TW_DEFAULT_TIME_ZONE := "Asia/Shanghai"
-
-# 文件系统支持
-TW_INCLUDE_NTFS_3G := true
-TW_INCLUDE_FUSE_EXFAT := true
-TW_INCLUDE_FUSE_NTFS := true
-TW_INCLUDE_RESETPROP := true
-
-# 触摸和UI
-TW_IGNORE_MISC_WIPE_DATA := true
-TW_USE_TOOLBOX := true
-TW_EXCLUDE_TWRPAPP := true
-TW_EXCLUDE_SUPERSU := true
-
-# 设备特定屏幕
 TW_SCREEN_BLANK_ON_BOOT := true
-TW_USE_MODEL_HARDWARE_ID_FOR_DEVICE_ID := true
-TW_DEVICE_VERSION := PD1936_V1936A_11
+TW_INPUT_BLACKLIST := "hbtp_vm"
+TW_USE_TOOLBOX := true
 
-# OrangeFox 特定检查
-OF_DISABLE_MIUI_SPECIFIC_FEATURES := 1
-OF_NO_TREBLE_COMPATIBILITY_CHECK := 1
-OF_SKIP_FBE_DECRYPTION := 0
+# OrangeFox Specific Configurations
+# =================================
+# Maintainer info
+OF_MAINTAINER := YourNameHere
 
-# ==================== 设备信息 ====================
-FOX_DEVICE_MODEL := "V1936A"
-FOX_DEVICE_BRAND := "vivo"
-FOX_DEVICE_NAME := "PD1936"
+# Device flags
+OF_USE_GREEN_LED := 0
+OF_NO_REFLASH_CURRENT_ORANGEFOX := true
 
-# 日志
-FOX_INCLUDE_LOG := true
-FOX_LOG_PATH := "/tmp/recovery.log"
+# Display/UI
+OF_SCREEN_H := 2340
+OF_SCREEN_W := 1080
+OF_STATUS_INDENT_LEFT := 48
+OF_STATUS_INDENT_RIGHT := 48
+OF_HIDE_NOTCH := true
+OF_ALLOW_DISABLE_NAVBAR := false
 
-# 系统属性
-FOX_USE_SYSTEM_PROPS := true
+# Features
+OF_SUPPORT_ALL_BLOCK_OTA_UPDATES := true
+OF_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR := true
+OF_CHECK_OVERWRITE_ATTEMPTS := true
+OF_QUICK_BACKUP_LIST := /boot /data /system /vendor
 
-# 备份排除
-TW_BACKUP_EXCLUSIONS := "/data/fonts/files"
+# Encryption
+OF_DONT_PATCH_ENCRYPTED_DEVICE := true
+OF_NO_TREBLE_COMPATIBILITY_CHECK := true
+
+# A/B devices
+OF_AB_DEVICE := false
+
+# Misc
+OF_USE_MAGISKBOOT := true
+OF_USE_MAGISKBOOT_FOR_ALL_PATCHES := true
+OF_USE_NEW_MAGISKBOOT := true
+OF_TARGET_DEVICES := PD1936
+OF_PATCH_AVB20 := true
+
+# Toolbox
+OF_USE_LZMA_COMPRESSION := true
+OF_USE_TAR_BINARY := true
+OF_USE_ZIP_BINARY := true
+OF_USE_BASH_SHELL := true
+OF_USE_NANO_EDITOR := true
+
+# Disable things we don't need
+OF_DISABLE_MIUI_SPECIFIC_FEATURES := true
+OF_NO_MIUI_PATCH_WARNING := true
+OF_NO_SAMSUNG_SPECIAL := true
+
+# Battery
+OF_USE_HEXDUMP := true
+
+# Recovery-as-boot
+OF_RECOVERY_AS_BOOT := false
+
+# Dynamic partition handling
+OF_DYNAMIC_FULL_SIZE := 9126805504
+OF_DYNAMIC_PARTITIONS := true
+
+# SHRP specific (if needed, uncomment)
+# SHRP_DEVICE_CODE := PD1936
+# SHRP_PATH := device/vivo/PD1936
+# SHRP_MAINTAINER := YourNameHere
+# SHRP_REC_TYPE := Normal
+# SHRP_DEVICE_TYPE := A/B
+# SHRP_REC := /dev/block/bootdevice/by-name/recovery
+# SHRP_EXPRESS := true
+# SHRP_OFFICIAL := true
+# SHRP_FLASH := 1
+# SHRP_STATUSBAR_RIGHT_PADDING := 48
+# SHRP_STATUSBAR_LEFT_PADDING := 48
