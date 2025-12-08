@@ -105,74 +105,69 @@ TW_SCREEN_BLANK_ON_BOOT := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_TOOLBOX := true
 
-# OrangeFox Specific Configurations
-# =================================
-# Maintainer info
-OF_MAINTAINER := YourNameHere
+# ============================================
+# OrangeFox Configuration (FOX_ variables)
+# ============================================
+
+# Basic OrangeFox settings
+FOX_MAINTAINER := YourNameHere
+FOX_TARGET_DEVICES := PD1936
 
 # Device flags
-OF_USE_GREEN_LED := 0
-OF_NO_REFLASH_CURRENT_ORANGEFOX := true
+FOX_USE_GREEN_LED := 0
+FOX_NO_REFLASH_CURRENT_ORANGEFOX := true
 
 # Display/UI
-OF_SCREEN_H := 2340
-OF_SCREEN_W := 1080
-OF_STATUS_INDENT_LEFT := 48
-OF_STATUS_INDENT_RIGHT := 48
-OF_HIDE_NOTCH := true
-OF_ALLOW_DISABLE_NAVBAR := false
+FOX_SCREEN_H := 2340
+FOX_SCREEN_W := 1080
+FOX_STATUS_INDENT_LEFT := 48
+FOX_STATUS_INDENT_RIGHT := 48
+FOX_HIDE_NOTCH := true
+FOX_ALLOW_DISABLE_NAVBAR := false
 
 # Features
-OF_SUPPORT_ALL_BLOCK_OTA_UPDATES := true
-OF_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR := true
-OF_CHECK_OVERWRITE_ATTEMPTS := true
-OF_QUICK_BACKUP_LIST := /boot /data /system /vendor
+FOX_SUPPORT_ALL_BLOCK_OTA_UPDATES := true
+FOX_FIX_OTA_UPDATE_MANUAL_FLASH_ERROR := true
+FOX_CHECK_OVERWRITE_ATTEMPTS := true
+FOX_QUICK_BACKUP_LIST := /boot /data /system /vendor
 
 # Encryption
-OF_DONT_PATCH_ENCRYPTED_DEVICE := true
-OF_NO_TREBLE_COMPATIBILITY_CHECK := true
+FOX_DONT_PATCH_ENCRYPTED_DEVICE := true
+FOX_NO_TREBLE_COMPATIBILITY_CHECK := true
 
 # A/B devices
-OF_AB_DEVICE := false
+FOX_AB_DEVICE := false
 
 # Misc
-OF_USE_MAGISKBOOT := true
-OF_USE_MAGISKBOOT_FOR_ALL_PATCHES := true
-OF_USE_NEW_MAGISKBOOT := true
-OF_TARGET_DEVICES := PD1936
-OF_PATCH_AVB20 := true
+FOX_USE_MAGISKBOOT := true
+FOX_USE_MAGISKBOOT_FOR_ALL_PATCHES := true
+FOX_USE_NEW_MAGISKBOOT := true
+FOX_PATCH_AVB20 := true
 
 # Toolbox
-OF_USE_LZMA_COMPRESSION := true
-OF_USE_TAR_BINARY := true
-OF_USE_ZIP_BINARY := true
-OF_USE_BASH_SHELL := true
-OF_USE_NANO_EDITOR := true
+FOX_USE_LZMA_COMPRESSION := true
+FOX_USE_TAR_BINARY := true
+FOX_USE_ZIP_BINARY := true
+FOX_USE_BASH_SHELL := true
+FOX_USE_NANO_EDITOR := true
 
 # Disable things we don't need
-OF_DISABLE_MIUI_SPECIFIC_FEATURES := true
-OF_NO_MIUI_PATCH_WARNING := true
-OF_NO_SAMSUNG_SPECIAL := true
+FOX_DISABLE_MIUI_SPECIFIC_FEATURES := true
+FOX_NO_MIUI_PATCH_WARNING := true
+FOX_NO_SAMSUNG_SPECIAL := true
 
 # Battery
-OF_USE_HEXDUMP := true
+FOX_USE_HEXDUMP := true
 
 # Recovery-as-boot
-OF_RECOVERY_AS_BOOT := false
+FOX_RECOVERY_AS_BOOT := false
 
 # Dynamic partition handling
-OF_DYNAMIC_FULL_SIZE := 9126805504
-OF_DYNAMIC_PARTITIONS := true
+FOX_DYNAMIC_FULL_SIZE := 9126805504
+FOX_DYNAMIC_PARTITIONS := true
 
-# SHRP specific (if needed, uncomment)
-# SHRP_DEVICE_CODE := PD1936
-# SHRP_PATH := device/vivo/PD1936
-# SHRP_MAINTAINER := YourNameHere
-# SHRP_REC_TYPE := Normal
-# SHRP_DEVICE_TYPE := A/B
-# SHRP_REC := /dev/block/bootdevice/by-name/recovery
-# SHRP_EXPRESS := true
-# SHRP_OFFICIAL := true
-# SHRP_FLASH := 1
-# SHRP_STATUSBAR_RIGHT_PADDING := 48
-# SHRP_STATUSBAR_LEFT_PADDING := 48
+# Build type
+FOX_BUILD_TYPE := Unofficial
+
+# Version
+FOX_VERSION := R11.1_2
