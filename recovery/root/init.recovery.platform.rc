@@ -1,6 +1,7 @@
 on early-boot
     start qseecomd
-    start cryptfshw-1-0
+    start keymaster-4-0
+    start gatekeeper-1-0
 
 # just boot in fastboot mode, fastbootd service need vendor.boot-hal-1-0 & health-hal-2-0
 on property:recovery.fastboot_mode=1
@@ -45,12 +46,6 @@ service keymaster-4-0 /vendor/bin/android.hardware.keymaster@4.0-service-qti
     seclabel u:r:recovery:s0
 
 service gatekeeper-1-0 /vendor/bin/android.hardware.gatekeeper@1.0-service-qti
-    disabled
-    user root
-    group root
-    seclabel u:r:recovery:s0
-
-service cryptfshw-1-0 /vendor/bin/vendor.qti.hardware.cryptfshw@1.0-service-qti
     disabled
     user root
     group root

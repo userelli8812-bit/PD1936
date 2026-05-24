@@ -33,9 +33,51 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.0-service
 
-# Keystore
+# Keystore / Crypto - required for FBE decryption
 PRODUCT_PACKAGES += \
-    android.hardware.keymaster@4.0
+    android.hardware.keymaster@3.0 \
+    android.hardware.keymaster@4.0 \
+    android.hardware.keymaster@4.1 \
+    android.hardware.gatekeeper@1.0 \
+    android.hardware.gatekeeper@1.0-impl-qti \
+    android.hardware.gatekeeper@1.0-service-qti \
+    libQSEEComAPI \
+    libqisl \
+    libGPreqcancel \
+    libGPreqcancel_svc \
+    libStDrvInt \
+    libsecureui \
+    libsecureui_svcsock \
+    libspcom \
+    libssd \
+    libdrmfs \
+    libdrmtime \
+    libdsutils \
+    libidl \
+    libjson \
+    libmdmdetect \
+    libperipheral_client \
+    libqmi_cci \
+    libqmi_client_qmux \
+    libqmi_common_so \
+    libqmi_csi \
+    libqmi_encdec \
+    libqmiservices \
+    libqrtr \
+    libqsocket \
+    libtime_genoff \
+    libkeystore-engine-wifi-hidl \
+    libkeystore-wifi-hidl \
+    vendor.qti.hardware.tui_comm@1.0 \
+    vendor.display.config@1.0
+
+# FBE metadata decrypt
+PRODUCT_PACKAGES += \
+    android.hardware.health@2.0 \
+    android.hardware.health@2.0-impl-default \
+    android.hardware.boot@1.0 \
+    android.hardware.boot@1.0-impl \
+    android.hardware.boot@1.0-service
 
 # NOTE: recovery.fstab is copied by the build script to
 # recovery/root/system/etc/recovery.fstab (see the ramdisk packaging step).

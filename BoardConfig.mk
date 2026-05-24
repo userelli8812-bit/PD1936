@@ -117,7 +117,6 @@ TW_USE_FSCRYPT := true
 TW_CRYPTO_FS_TYPE := f2fs
 TW_CRYPTO_SYSTEM_VOLD_MOUNT := system
 TW_HAS_MTP := true
-TW_MTP_DEVICE := /dev/mtp_usb
 BOARD_IGNORE_EMPTY_INIT := true
 # Enable hardware inline encryption support
 TW_INCLUDE_CRYPTO_FBE_HW := true
