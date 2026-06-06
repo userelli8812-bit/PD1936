@@ -1,0 +1,183 @@
+# Copyright (C) 2026 The Android Open Source Project
+# Copyright (C) 2026 SebaUbuntu's TWRP device tree generator
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+DEVICE_PATH := device/vivo/PD1936
+
+# For building with minimal manifest
+ALLOW_MISSING_DEPENDENCIES := true
+
+# Architecture
+TARGET_ARCH := arm64
+TARGET_ARCH_VARIANT := armv8-a
+TARGET_CPU_ABI := arm64-v8a
+TARGET_CPU_ABI2 := 
+TARGET_CPU_VARIANT := generic
+TARGET_CPU_VARIANT_RUNTIME := generic
+
+TARGET_2ND_ARCH := arm
+TARGET_2ND_ARCH_VARIANT := armv7-a-neon
+TARGET_2ND_CPU_ABI := armeabi-v7a
+TARGET_2ND_CPU_ABI2 := armeabi
+TARGET_2ND_CPU_VARIANT := generic
+TARGET_2ND_CPU_VARIANT_RUNTIME := cortex-a9
+
+# APEX
+OVERRIDE_TARGET_FLATTEN_APEX := true
+
+# Bootloader
+TARGET_BOOTLOADER_BOARD_NAME := msmnile
+TARGET_NO_BOOTLOADER := true
+
+# Display
+TARGET_SCREEN_DENSITY := 480
+
+# Kernel
+BOARD_BOOTIMG_HEADER_VERSION := 2
+BOARD_KERNEL_BASE := 0x00000000
+BOARD_KERNEL_CMDLINE := console=ttyMSM0 earlycon=ttyMSM0 androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 loop.max_p[...]
+BOARD_KERNEL_PAGESIZE := 4096
+BOARD_RAMDISK_OFFSET := 0x01000000
+BOARD_KERNEL_TAGS_OFFSET := 0x00000100
+BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
+BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
+BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
+BOARD_KERNEL_IMAGE_NAME := Image
+BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+BOARD_KERNEL_SEPARATED_DTBO := true
+TARGET_KERNEL_CONFIG := PD1936_defconfig
+TARGET_KERNEL_SOURCE := kernel/vivo/PD1936
+
+# Kernel - prebuilt
+TARGET_FORCE_PREBUILT_KERNEL := true
+ifeq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
+TARGET_PREBUILT_DTB := $(DEVICE_PATH)/prebuilt/dtb.img
+BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
+BOARD_INCLUDE_DTB_IN_BOOTIMG := 
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
+BOARD_KERNEL_SEPARATED_DTBO := 
+endif
+
+
+
+# -----------------------------------------------------------------------------
+# Partitions
+# -----------------------------------------------------------------------------
+BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
+BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
+BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296
+BOARD_HAS_LARGE_FILESYSTEM := true
+BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
+BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
+TARGET_COPY_OUT_VENDOR := vendor
+
+# -----------------------------------------------------------------------------
+# Recovery / TWRP
+# -----------------------------------------------------------------------------
+BOARD_INCLUDE_RECOVERY_DTBO := true
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
+TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
+TARGET_USERIMAGES_USE_EXT4 := true
+TARGET_USERIMAGES_USE_F2FS := true
+
+TW_THEME := portrait_hdpi
+TW_EXTRA_LANGUAGES := true
+TW_SCREEN_BLANK_ON_BOOT := false
+TW_INPUT_BLACKLIST := hbtp_vm
+TW_USE_TOOLBOX := true
+TW_EXCLUDE_TWRPAPP := true
+TW_NO_SCREEN_BLANK := true
+TW_NO_VIBRATION := true
+TW_HAS_NO_USB_STORAGE := true
+
+# TWRP Features
+TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_CRYPTO_FBE := true
+TW_INCLUDE_CRYPTO_METADATA := true
+TW_INCLUDE_FUSE := true
+TW_INCLUDE_EXFAT := true
+TW_INCLUDE_NTFS := true
+TW_INCLUDE_ASHMEM := true
+TW_INCLUDE_PSTORE := true
+TW_INCLUDE_LOGCAT := true
+TW_INCLUDE_GREP := true
+TW_INCLUDE_SHA1SUM := true
+TW_INCLUDE_SHA256SUM := true
+TW_INCLUDE_CRYPTFS := true
+TW_ALLOW_FLASH_RAW := true
+
+# Decrypt /data - Hardware FBE / Inline Encryption (vivo specific)
+BOARD_SUPPRESS_SECURE_ERASE := true
+BOARD_SUPPRESS_EMMC_WIPE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+TW_INCLUDE_KEYMASTER_HAL := true
+TW_USE_FSCRYPT := true
+TW_CRYPTO_FS_TYPE := f2fs
+TW_HAS_MTP := true
+BOARD_IGNORE_EMPTY_INIT := true
+TW_INCLUDE_CRYPTO_FBE_HW := true
+BOARD_USES_QCOM_FBE_DECRYPTION := true
+TARGET_ENABLE_MEDIADRM_64 := true
+
+# Vivo-specific FBE decryption via vivofbe
+TW_CUSTOM_CRYPTO_VIVO := true
+TW_INCLUDE_VIVOFBE := true
+TW_CRYPTO_USE_VIVOFBE := true
+
+# Include vivo decryption binaries in recovery
+TARGET_RECOVERY_DEVICE_MODULES += \
+    vivofbe \
+    guardianangle \
+    wait_for_keymaster \
+    keystore \
+    keystore_auth \
+    vts_app_recovery \
+    libGuardianAngleClient \
+    libGuardianAngleService \
+    libGuardianAngleServiceImpl \
+    libvivocryptfs \
+    libvivofscrypt \
+    libvivogatekeeper \
+    libcryptfs_hw \
+    libkeymasterprovision \
+    libqtikeymaster4 \
+    libspcom \
+    libqrtr \
+    libqsocket \
+    libion \
+    libsqlite \
+    libandroidicu
+
+# Backup
+TW_EXCLUDE_KEEP_MD5 := true
+TW_BACKUP_DISABLE_COMPRESSION := false
+# No external SD on this device; exclude internal storage (/storage -> /data/media/0)
+TW_EXCLUDE_STORAGE := /storage
+TW_INCLUDE_FBEX := true
+RECOVERY_SDCARD_ON_DATA := true
+TW_HAS_DATA_MEDIA := true
+
+# Fix reboot loop
+TW_HAS_NO_RECOVERY_PARTITION := false
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+# -----------------------------------------------------------------------------
+# Verified Boot / AVB
+# -----------------------------------------------------------------------------
+BOARD_AVB_ENABLE := true
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+
+# Required for non-A/B devices
+BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA2048
+BOARD_AVB_RECOVERY_HASH := $(BOARD_AVB_RECOVERY_KEY_PATH)
+BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
+BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
+BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
+
+# Vendor / security patch
+VENDOR_SECURITY_PATCH := 2021-07-01
+PLATFORM_SECURITY_PATCH := 2021-07-01
