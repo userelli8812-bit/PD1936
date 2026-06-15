@@ -1,1 +1,2 @@
 export ALLOW_MISSING_DEPENDENCIES=true
+export GIVE_BACK_MISSING_;&euro=true
